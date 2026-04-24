@@ -9,54 +9,122 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as ShooCallbackRouteImport } from './routes/shoo/callback'
+import { Route as DashboardStatsRouteImport } from './routes/dashboard/stats'
+import { Route as DashboardHistoryRouteImport } from './routes/dashboard/history'
 
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
 } as any)
 const ShooCallbackRoute = ShooCallbackRouteImport.update({
   id: '/shoo/callback',
   path: '/shoo/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardStatsRoute = DashboardStatsRouteImport.update({
+  id: '/stats',
+  path: '/stats',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardHistoryRoute = DashboardHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => DashboardRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/dashboard/history': typeof DashboardHistoryRoute
+  '/dashboard/stats': typeof DashboardStatsRoute
   '/shoo/callback': typeof ShooCallbackRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard/history': typeof DashboardHistoryRoute
+  '/dashboard/stats': typeof DashboardStatsRoute
   '/shoo/callback': typeof ShooCallbackRoute
+  '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/dashboard/history': typeof DashboardHistoryRoute
+  '/dashboard/stats': typeof DashboardStatsRoute
   '/shoo/callback': typeof ShooCallbackRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/shoo/callback'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/dashboard/history'
+    | '/dashboard/stats'
+    | '/shoo/callback'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/shoo/callback'
-  id: '__root__' | '/' | '/shoo/callback'
+  to:
+    | '/'
+    | '/dashboard/history'
+    | '/dashboard/stats'
+    | '/shoo/callback'
+    | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/dashboard/history'
+    | '/dashboard/stats'
+    | '/shoo/callback'
+    | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
   ShooCallbackRoute: typeof ShooCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRoute
     }
     '/shoo/callback': {
       id: '/shoo/callback'
@@ -65,11 +133,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShooCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/stats': {
+      id: '/dashboard/stats'
+      path: '/stats'
+      fullPath: '/dashboard/stats'
+      preLoaderRoute: typeof DashboardStatsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/history': {
+      id: '/dashboard/history'
+      path: '/history'
+      fullPath: '/dashboard/history'
+      preLoaderRoute: typeof DashboardHistoryRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
+interface DashboardRouteChildren {
+  DashboardHistoryRoute: typeof DashboardHistoryRoute
+  DashboardStatsRoute: typeof DashboardStatsRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardHistoryRoute: DashboardHistoryRoute,
+  DashboardStatsRoute: DashboardStatsRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRouteWithChildren,
   ShooCallbackRoute: ShooCallbackRoute,
 }
 export const routeTree = rootRouteImport

@@ -1,5 +1,15 @@
-import { createShooConvexAuth } from '@shoojs/react'
+import {
+  createShooConvexAuth,
+  useShooAuth as useShooAuthBase,
+} from '@shoojs/react'
 
-export const { useAuth, signIn, signOut } = createShooConvexAuth({
+const shooOptions = {
   callbackPath: '/shoo/callback',
-})
+  requestPii: true,
+}
+
+export const { useAuth, signIn, signOut } = createShooConvexAuth(shooOptions)
+
+export function useShooAuth() {
+  return useShooAuthBase(shooOptions)
+}

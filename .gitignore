@@ -18,6 +18,9 @@ dist-ssr
 # Convex (auto-generated)
 convex/_generated
 
+# Convex seed answers (secret, never commit)
+convex/seed.answers.local.json
+
 # TanStack / Vite caches
 .tanstack
 .vite

@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
-import { Calendar, History, BarChart3, LogOut } from 'lucide-react'
+import { Puzzle, History, BarChart3, LogOut } from 'lucide-react'
 import { signOut, useShooAuth } from '../shoo'
 
 export const Route = createFileRoute('/dashboard')({
@@ -55,8 +55,8 @@ function DashboardLayout() {
             inactiveProps={{ className: navItemInactive }}
             activeOptions={{ exact: true }}
           >
-            <Calendar size={16} strokeWidth={1.75} />
-            Today
+            <Puzzle size={16} strokeWidth={1.75} />
+            Puzzles
           </Link>
           <Link
             to="/dashboard/history"

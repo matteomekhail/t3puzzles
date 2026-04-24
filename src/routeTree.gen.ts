@@ -15,6 +15,7 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as ShooCallbackRouteImport } from './routes/shoo/callback'
 import { Route as DashboardStatsRouteImport } from './routes/dashboard/stats'
 import { Route as DashboardHistoryRouteImport } from './routes/dashboard/history'
+import { Route as DashboardPuzzlePuzzleIdRouteImport } from './routes/dashboard/puzzle/$puzzleId'
 
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
@@ -46,6 +47,11 @@ const DashboardHistoryRoute = DashboardHistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardPuzzlePuzzleIdRoute = DashboardPuzzlePuzzleIdRouteImport.update({
+  id: '/puzzle/$puzzleId',
+  path: '/puzzle/$puzzleId',
+  getParentRoute: () => DashboardRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/stats': typeof DashboardStatsRoute
   '/shoo/callback': typeof ShooCallbackRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/puzzle/$puzzleId': typeof DashboardPuzzlePuzzleIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/dashboard/stats': typeof DashboardStatsRoute
   '/shoo/callback': typeof ShooCallbackRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/puzzle/$puzzleId': typeof DashboardPuzzlePuzzleIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/dashboard/stats': typeof DashboardStatsRoute
   '/shoo/callback': typeof ShooCallbackRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/puzzle/$puzzleId': typeof DashboardPuzzlePuzzleIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -80,6 +89,7 @@ export interface FileRouteTypes {
     | '/dashboard/stats'
     | '/shoo/callback'
     | '/dashboard/'
+    | '/dashboard/puzzle/$puzzleId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/dashboard/stats'
     | '/shoo/callback'
     | '/dashboard'
+    | '/dashboard/puzzle/$puzzleId'
   id:
     | '__root__'
     | '/'
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/dashboard/stats'
     | '/shoo/callback'
     | '/dashboard/'
+    | '/dashboard/puzzle/$puzzleId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -147,6 +159,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardHistoryRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/puzzle/$puzzleId': {
+      id: '/dashboard/puzzle/$puzzleId'
+      path: '/puzzle/$puzzleId'
+      fullPath: '/dashboard/puzzle/$puzzleId'
+      preLoaderRoute: typeof DashboardPuzzlePuzzleIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
@@ -154,12 +173,14 @@ interface DashboardRouteChildren {
   DashboardHistoryRoute: typeof DashboardHistoryRoute
   DashboardStatsRoute: typeof DashboardStatsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardPuzzlePuzzleIdRoute: typeof DashboardPuzzlePuzzleIdRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardHistoryRoute: DashboardHistoryRoute,
   DashboardStatsRoute: DashboardStatsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardPuzzlePuzzleIdRoute: DashboardPuzzlePuzzleIdRoute,
 }
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
